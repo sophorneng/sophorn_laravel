@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 
-
 class PostController extends Controller
 {
     /**
@@ -14,9 +13,9 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    
     {
         //
+        return Post::latest()->get();
     }
 
     /**
@@ -28,6 +27,15 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        
+        $Post = new Post();
+        $Post->title = $request->title;
+        $Post->body = $request->body;
+        $Post->user_id = $request->user_id;
+
+        $Post->save();
+
+        return response()->json(['message' => 'create'], 201);
     }
 
     /**
@@ -39,6 +47,7 @@ class PostController extends Controller
     public function show($id)
     {
         //
+        return Post::findOrFail($id);
     }
 
     /**
@@ -51,6 +60,15 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         //
+       
+        $Post = Post::findOrFail($id);
+        $Post->title = $request->title;
+        $Post->body = $request->body;
+        $Post->user_id = $request->user_id;
+
+        $Post->save();
+
+        return response()->json(['message' => 'update'], 201);
     }
 
     /**
@@ -62,5 +80,6 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        return Post::destroy($id);
     }
 }
